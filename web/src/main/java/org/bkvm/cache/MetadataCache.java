@@ -88,10 +88,27 @@ public class MetadataCache implements AutoCloseable {
         }
     }
 
+    public void updateCluster(Cluster cluster) {
+        try (CloseableEntityManager emw = getEntityManager()) {
+            EntityManager em = emw.em;
+            em.getTransaction().begin();
+            em.persist(cluster);
+            em.getTransaction().commit();
+        }
+    }
+
     public List<Bookie> listBookies() {
         try (CloseableEntityManager emw = getEntityManager()) {
             EntityManager em = emw.em;
             Query q = em.createQuery("select l from bookie l order by l.bookieId", Bookie.class);
+            return q.getResultList();
+        }
+    }
+    
+    public List<Cluster> listClusters() {
+        try (CloseableEntityManager emw = getEntityManager()) {
+            EntityManager em = emw.em;
+            Query q = em.createQuery("SELECT c FROM cluster c", Cluster.class);
             return q.getResultList();
         }
     }

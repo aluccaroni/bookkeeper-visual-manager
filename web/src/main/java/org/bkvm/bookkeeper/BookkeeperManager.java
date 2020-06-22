@@ -67,6 +67,7 @@ import org.apache.bookkeeper.replication.ReplicationException;
 import org.apache.bookkeeper.tools.cli.helpers.CommandHelpers;
 import org.apache.zookeeper.KeeperException;
 import org.bkvm.cache.Bookie;
+import org.bkvm.cache.Cluster;
 import org.bkvm.cache.Ledger;
 import org.bkvm.cache.LedgerBookie;
 import org.bkvm.cache.LedgerMetadataEntry;
@@ -431,6 +432,14 @@ public class BookkeeperManager implements AutoCloseable {
 
     public Collection<Bookie> getAllBookies() throws BookkeeperException {
         return metadataCache.listBookies();
+    }
+
+    public Collection<Cluster> getAllClusters() throws BookkeeperException {
+        return metadataCache.listClusters();
+    }
+    
+    public void updateCluster(Cluster cluster) throws BookkeeperException {
+        metadataCache.updateCluster(cluster);
     }
 
     @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE")
