@@ -87,7 +87,10 @@ public class BookkeeperManager implements AutoCloseable {
     private final ConfigurationStore configStore;
     private final ClientConfiguration conf;
 
+    @Deprecated
     private final BookKeeper bkClient;
+    private final BookkeeperClusterPool bkClusterPool;
+    
     private final BookKeeperAdmin bkAdmin;
     private final MetadataCache metadataCache;
     private final LedgerMetadataSerDe serDe = new LedgerMetadataSerDe();
@@ -133,7 +136,10 @@ public class BookkeeperManager implements AutoCloseable {
 
             LOG.log(Level.INFO, "Starting bookkeeper client with connection string = {0}", zkMetadataServiceUri);
             this.bkClient = BookKeeper.forConfig(conf).build();
-
+                
+            // TODO: inizialize the = new BookkeeperClusterPool()
+            this.bkClusterPool = new BookkeeperClusterPool();
+            
             Map<String, String> remainingKeys = new HashMap<>();
             this.conf.getKeys().forEachRemaining(key -> {
                 remainingKeys.put(key, String.valueOf(conf.getProperty(key)));
@@ -321,6 +327,11 @@ public class BookkeeperManager implements AutoCloseable {
     @Override
     public void close() throws BookkeeperException {
         try {
+            // TODO: Close the cluster pool
+            if (bkClusterPool != null) {
+                LOG.log(Level.INFO, "Closing bookkeeper cluster pool");
+                bkClusterPool.close();
+            }
             if (bkClient != null) {
                 LOG.log(Level.INFO, "Closing bookkeeper connection");
                 bkClient.close();
@@ -440,6 +451,10 @@ public class BookkeeperManager implements AutoCloseable {
     
     public void updateCluster(Cluster cluster) throws BookkeeperException {
         metadataCache.updateCluster(cluster);
+    }
+    
+    public void deleteCluster(String name) throws BookkeeperException {
+        metadataCache.deleteCluster(name);
     }
 
     @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE")

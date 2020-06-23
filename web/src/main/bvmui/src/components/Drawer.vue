@@ -30,8 +30,8 @@ export default {
             items: [
                 { icon: "mdi-server", text: "Bookies", path: "/bookies" },
                 { icon: "mdi-memory", text: "Ledgers", path: "/ledgers" },
-                { icon: "mdi-cached", text: "System", path: "/systemstatus" },
-                { icon: "mdi-cached", text: "Clusters", path: "/clusters" }
+                { icon: "mdi-lan-connect", text: "Clusters", path: "/clusters" },
+                { icon: "mdi-cached", text: "System", path: "/systemstatus" }
             ]
         };
     },

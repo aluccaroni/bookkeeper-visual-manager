@@ -19,7 +19,6 @@
  */
 package org.bkvm.cache;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +29,6 @@ import javax.persistence.Id;
  * @author eolivelli
  */
 @Entity(name = "cluster")
-@SuppressFBWarnings({"EI_EXPOSE_REP2", "EI_EXPOSE_REP"})
 public class Cluster implements Serializable {
 
     @Id

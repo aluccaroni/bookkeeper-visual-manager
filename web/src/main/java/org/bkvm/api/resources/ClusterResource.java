@@ -27,6 +27,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.bkvm.cache.Cluster;
@@ -58,12 +59,19 @@ public class ClusterResource extends AbstractBookkeeperResource {
     @Path("add")
     @Consumes(MediaType.APPLICATION_JSON)
     public void addCluster(ClusterBean bean) throws Exception {
-        System.out.println(">> add " + bean);
-        
+
         Cluster cluster = new Cluster();
         cluster.setName(bean.getName());
         cluster.setMetadataServiceUri(bean.getMetadataServiceUri());
         getBookkeeperManger().updateCluster(cluster);
+    }
+    
+    @POST
+    @Secured
+    @Path("delete/{clusterName}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void deleteCluster(@PathParam(value = "clusterName") String clusterName) throws Exception {
+        getBookkeeperManger().deleteCluster(clusterName);
     }
 
     public static final class ClusterBean implements Serializable {
