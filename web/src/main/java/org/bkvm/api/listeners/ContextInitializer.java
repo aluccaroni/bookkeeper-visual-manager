@@ -72,16 +72,16 @@ public class ContextInitializer implements ServletContextListener {
             context.setAttribute("authManager", authManager);
 
             MetadataCache metadataCache = new MetadataCache(datasource);
-            String defaultClusterName = configStore.getProperty("cluster.defaultName", "");
-            String defaultClusterMetadataServiceUri = configStore.getProperty("cluster.defaultClusterMetadataServiceUri", "");
-            // TODO: Try to connect to defaultClusterMetadataServiceUri
-            
+
             context.setAttribute("metadataCache", metadataCache);
             BookkeeperManager bookkeeperManager = new BookkeeperManager(configStore, metadataCache);
             context.setAttribute("bookkeeper", bookkeeperManager);
 
             // launch reload in background
             bookkeeperManager.refreshMetadataCache();
+
+            // Connect to metadataServiceUri
+
         } catch (Throwable ex) {
             ex.printStackTrace();
             throw new RuntimeException("Unexpected error occurred " + ex, ex);

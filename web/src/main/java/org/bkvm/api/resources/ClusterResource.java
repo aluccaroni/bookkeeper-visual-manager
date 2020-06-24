@@ -34,8 +34,8 @@ import org.bkvm.cache.Cluster;
 
 @Path("cluster")
 public class ClusterResource extends AbstractBookkeeperResource {
-    
-    private static int CLUSTER_ID = 1;
+
+    private static int clusterId = 1;
 
     @GET
     @Secured
@@ -50,13 +50,13 @@ public class ClusterResource extends AbstractBookkeeperResource {
             bean.setClusterId(cluster.getClusterId());
             bean.setName(cluster.getName());
             bean.setMetadataServiceUri(cluster.getMetadataServiceUri());
-            
+
             res.add(bean);
         }
 
         return res;
     }
-    
+
     @GET
     @Secured
     @Path("count")
@@ -71,15 +71,14 @@ public class ClusterResource extends AbstractBookkeeperResource {
     @Path("add")
     @Consumes(MediaType.APPLICATION_JSON)
     public void addCluster(ClusterBean bean) throws Exception {
-
         Cluster cluster = new Cluster();
-        cluster.setClusterId(CLUSTER_ID++);
+        cluster.setClusterId(clusterId++);
         cluster.setName(bean.getName());
         cluster.setMetadataServiceUri(bean.getMetadataServiceUri());
         cluster.setConfiguration(bean.getConfiguration());
         getBookkeeperManager().updateCluster(cluster);
     }
-    
+
     @POST
     @Secured
     @Path("delete/{clusterId}")

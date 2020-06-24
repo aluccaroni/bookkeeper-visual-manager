@@ -39,7 +39,7 @@ public class BookkeeperClusterPool implements Closeable {
     }
 
     private BookKeeper createBookKeeperClient(String metadataServiceUri) {
-        // TODO: Establish a connection to metadataServiceUri
+        // Establish a connection to metadataServiceUri
         return null;
     }
 
@@ -49,7 +49,7 @@ public class BookkeeperClusterPool implements Closeable {
     }
 
     private void releaseBookKeeperClient(BookKeeper bkClient) throws BookkeeperException {
-        // TODO: close the connection
+        // close the connection
         try {
             if (bkClient != null) {
                 bkClient.close();
