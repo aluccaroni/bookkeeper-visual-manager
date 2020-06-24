@@ -41,8 +41,8 @@ public class Bookie implements Serializable {
     @Id
     private String bookieId;
     
-    @Column(columnDefinition = "string")
-    private String clusterName;
+    @Column(columnDefinition = "int")
+    private Integer clusterId;
 
     @Column(columnDefinition = "string")
     private String description;

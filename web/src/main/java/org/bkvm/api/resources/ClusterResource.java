@@ -34,17 +34,20 @@ import org.bkvm.cache.Cluster;
 
 @Path("cluster")
 public class ClusterResource extends AbstractBookkeeperResource {
+    
+    private static int CLUSTER_ID = 1;
 
     @GET
     @Secured
     @Path("all")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ClusterBean> getCluster() throws Exception {
+    public List<ClusterBean> getClusters() throws Exception {
         List<ClusterBean> res = new ArrayList<>();
 
-        Collection<Cluster> clusters = getBookkeeperManger().getAllClusters();
+        Collection<Cluster> clusters = getBookkeeperManager().getAllClusters();
         for (Cluster cluster : clusters) {
             ClusterBean bean = new ClusterBean();
+            bean.setClusterId(cluster.getClusterId());
             bean.setName(cluster.getName());
             bean.setMetadataServiceUri(cluster.getMetadataServiceUri());
             
@@ -52,6 +55,15 @@ public class ClusterResource extends AbstractBookkeeperResource {
         }
 
         return res;
+    }
+    
+    @GET
+    @Secured
+    @Path("count")
+    @Produces(MediaType.APPLICATION_JSON)
+    public int getClusterCount() throws Exception {
+        List<ClusterBean> clusters = getClusters();
+        return clusters.size();
     }
 
     @POST
@@ -61,23 +73,35 @@ public class ClusterResource extends AbstractBookkeeperResource {
     public void addCluster(ClusterBean bean) throws Exception {
 
         Cluster cluster = new Cluster();
+        cluster.setClusterId(CLUSTER_ID++);
         cluster.setName(bean.getName());
         cluster.setMetadataServiceUri(bean.getMetadataServiceUri());
-        getBookkeeperManger().updateCluster(cluster);
+        cluster.setConfiguration(bean.getConfiguration());
+        getBookkeeperManager().updateCluster(cluster);
     }
     
     @POST
     @Secured
-    @Path("delete/{clusterName}")
+    @Path("delete/{clusterId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteCluster(@PathParam(value = "clusterName") String clusterName) throws Exception {
-        getBookkeeperManger().deleteCluster(clusterName);
+    public void deleteCluster(@PathParam(value = "clusterId") int clusterId) throws Exception {
+        getBookkeeperManager().deleteCluster(clusterId);
     }
 
     public static final class ClusterBean implements Serializable {
 
+        private int clusterId;
         private String name;
         private String metadataServiceUri;
+        private String configuration;
+
+        public int getClusterId() {
+            return clusterId;
+        }
+
+        public void setClusterId(int clusterId) {
+            this.clusterId = clusterId;
+        }
 
         public String getName() {
             return name;
@@ -93,6 +117,14 @@ public class ClusterResource extends AbstractBookkeeperResource {
 
         public void setMetadataServiceUri(String metadataServiceUri) {
             this.metadataServiceUri = metadataServiceUri;
+        }
+
+        public String getConfiguration() {
+            return configuration;
+        }
+
+        public void setConfiguration(String configuration) {
+            this.configuration = configuration;
         }
 
         @Override

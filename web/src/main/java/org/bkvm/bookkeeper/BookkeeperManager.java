@@ -453,8 +453,8 @@ public class BookkeeperManager implements AutoCloseable {
         metadataCache.updateCluster(cluster);
     }
     
-    public void deleteCluster(String name) throws BookkeeperException {
-        metadataCache.deleteCluster(name);
+    public void deleteCluster(int clusterId) throws BookkeeperException {
+        metadataCache.deleteCluster(clusterId);
     }
 
     @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE")

@@ -75,7 +75,9 @@ public class MetadataCache implements AutoCloseable {
                 em.getTransaction().commit();
                 return result;
             } catch (Throwable ex) {
-                em.getTransaction().rollback();
+                if (em.getTransaction().isActive()) {
+                    em.getTransaction().rollback();
+                }
                 throw ex;
             }
         }
@@ -109,10 +111,10 @@ public class MetadataCache implements AutoCloseable {
         }
     }
 
-    public void deleteCluster(String name) {
+    public void deleteCluster(int clusterId) {
         try (EntityManagerWrapper e = getEntityManager()) {
             e.executeWithTransaction(em -> {
-                Cluster cluster = em.find(Cluster.class, name);
+                Cluster cluster = em.find(Cluster.class, clusterId);
                 em.remove(cluster);
                 return null;
             });

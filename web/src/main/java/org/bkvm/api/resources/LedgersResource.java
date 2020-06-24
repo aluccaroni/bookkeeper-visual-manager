@@ -56,7 +56,7 @@ public class LedgersResource extends AbstractBookkeeperResource {
                 _ledgersIds = new ArrayList<>();
             }
         }
-        List<Long> ids = getBookkeeperManger().searchLedgers(term, bookie, _ledgersIds, convertParamInt(minLength),
+        List<Long> ids = getBookkeeperManager().searchLedgers(term, bookie, _ledgersIds, convertParamInt(minLength),
                 convertParamInt(maxLength), convertParamInt(minAge));
         List<LedgerBean> res = new ArrayList<>();
         for (long id : ids) {
@@ -73,12 +73,12 @@ public class LedgersResource extends AbstractBookkeeperResource {
     @Path("metadata/{ledgerId}")
     @Produces(MediaType.APPLICATION_JSON)
     public LedgerBean getLedgerMetadata(@PathParam("ledgerId") long ledgerId) throws Exception {
-        Ledger ledgerMetadata = getBookkeeperManger().getLedger(ledgerId);
+        Ledger ledgerMetadata = getBookkeeperManager().getLedger(ledgerId);
         return convertLedgerBean(ledgerId, ledgerMetadata);
     }
 
     private LedgerBean convertLedgerBean(long ledgerId, Ledger ledger) throws BookkeeperException {
-        LedgerMetadata ledgerMetadata = getBookkeeperManger().getLedgerMetadata(ledger);
+        LedgerMetadata ledgerMetadata = getBookkeeperManager().getLedgerMetadata(ledger);
         LedgerBean b = new LedgerBean();
         b.setId(ledgerId);
         b.setLedgerMetadata(ledgerMetadata);

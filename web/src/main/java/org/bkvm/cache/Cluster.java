@@ -32,11 +32,18 @@ import javax.persistence.Id;
 public class Cluster implements Serializable {
 
     @Id
-    @Column(columnDefinition = "string")
+    @Column(columnDefinition = "int")
+//  @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer clusterId;
+    
+    @Column(columnDefinition = "string", length = 255)
     private String name;
 
-    @Column(columnDefinition = "string")
+    @Column(columnDefinition = "string", length = 255)
     private String metadataServiceUri;
+    
+    @Column(columnDefinition = "string", length = 5000)
+    private String configuration;
 
     public Cluster() {
     }
@@ -46,6 +53,14 @@ public class Cluster implements Serializable {
         this.metadataServiceUri = metadataServiceUri;
     }
 
+    public int getClusterId() {
+        return clusterId;
+    }
+
+    public void setClusterId(int clusterId) {
+        this.clusterId = clusterId;
+    }
+    
     public String getName() {
         return name;
     }
@@ -61,5 +76,13 @@ public class Cluster implements Serializable {
     public void setMetadataServiceUri(String metadataServiceUri) {
         this.metadataServiceUri = metadataServiceUri;
     }
+    
+    public String getConfiguration() {
+        return configuration;
+    }
 
+    public void setConfiguration(String configuration) {
+        this.configuration = configuration;
+    }
+    
 }
